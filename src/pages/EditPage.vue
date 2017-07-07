@@ -34,10 +34,10 @@
       </md-dialog-content>
     </md-dialog>
     <draggable :list="cmpsToDisplay" @end="onEnd" :options="{draggable:'section'}">
-      <!--<transition-group v-if="cmpsToDisplay" name="list" tag="p">-->
+      <transition-group  name="cmps" tag="p">
       <component v-for="(cmp, idx) in cmpsToDisplay" v-bind:is="cmp.type" :key="cmp._id" :cmp="cmp" :isEditable="true" :isFirst="idx === 0" :isLast="idx === lastIdxCmps">
       </component>
-      <!--</transition-group>-->
+      </transition-group>
     </draggable>
   
     <div class="btn-holder">
@@ -166,13 +166,13 @@ div :hover {
 }
 
 
-.list-enter-active,
-.list-leave-active {
+.cmps-enter-active,
+.cmps-leave-active {
   transition: all 1s;
 }
 
-.list-enter,
-.list-leave-to {
+.cmps-enter,
+.cnps-leave-to {
   opacity: 0;
   transform: translateY(30px);
 }
