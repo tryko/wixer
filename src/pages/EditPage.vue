@@ -37,20 +37,11 @@
       <transition-group  name="cmps" tag="p">
       <component v-for="(cmp, idx) in cmpsToDisplay" v-bind:is="cmp.type" :key="cmp._id" :cmp="cmp" :isEditable="true" :isFirst="idx === 0" :isLast="idx === lastIdxCmps">
       </component>
-<<<<<<< HEAD
       </transition-group>
     </draggable>
   
     <div class="btn-holder">
       <md-button class="md-icon-butto n md-raised md-accent" id="custom" @click="openDialog('dialog1')">
-=======
-    </transition-group>
-    <div class="btn-holder" v-if="isLoading">
-      <md-spinner md-indeterminate class="btn-holder"></md-spinner>
-    </div>
-    <div class="btn-holder">
-      <md-button class="md-icon-button md-raised md-primary" id="custom" @click="openDialog('addDialog')">
->>>>>>> master
         <md-icon>add</md-icon>
       </md-button>
     </div>
@@ -88,23 +79,8 @@ export default {
     }
   },
   computed: {
-<<<<<<< HEAD
-    // selectedCmps() {
-    //   return this.$store.state.selectedCmps;
-    // },
-    cmpsToDisplay: {
-      get() {
-        return this.$store.getters.cmpsToDisplay
-
-
-      },
-      set(newCmps) {
-        console.log(newCmps)
-      }
-=======
     cmpsToDisplay() {
       return this.$store.getters.cmpsToDisplay;
->>>>>>> master
     },
     lastIdxCmps() {
       return this.cmpsToDisplay.length - 1;
