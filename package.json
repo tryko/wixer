@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "body-parser": "^1.17.2",
     "lodash": "^4.17.4",
     "npm-run-all": "^4.0.2",
     "vue": "^2.3.3",
