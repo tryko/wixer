@@ -11,7 +11,9 @@ const store = new Vuex.Store({
     selectedCmps: null,
     tmplCmps: cmpService.tmplCmps,
     isEditMode: false,
-    pageEditObj: null
+    pageEditObj: null,
+    isAdding: false,
+    // isLoading: true
   },
   getters: {
     cmpsToDisplay: state => {
@@ -26,9 +28,18 @@ const store = new Vuex.Store({
         });
         return cmpsToDisplay;
       }
+    },
+    isLoading: (state, getters) => {
+      var isLoading = (!getters.cmpsToDisplay || state.isAdding)
+      return isLoading;
     }
   },
+
   mutations: {
+    setIsAdding(state, {isAdding}){
+      console.log('set is adding')
+      state.isAdding = isAdding;
+    },
     loadCmp(state, { cmps }) {
       state.selectedCmps = cmps;
     },
@@ -42,7 +53,6 @@ const store = new Vuex.Store({
     deleteCmp(state, { cmp }) {
       var idxToDeleteFromCmps = getCmpIdx(cmp);
       var idxToDeleteFromOrder = state.pageEditObj.cmpsOrder.indexOf(cmp._id);
-      // console.log(idx)
       state.selectedCmps.splice(idxToDeleteFromCmps, 1);
       state.pageEditObj.cmpsOrder.splice(idxToDeleteFromOrder, 1);
     },
@@ -62,7 +72,15 @@ const store = new Vuex.Store({
     loadCmp(context, payload) {
       cmpService.getCmps()
         .then(res => {
+<<<<<<< HEAD
           console.log('loaded cmps from db:', res)
+=======
+<<<<<<< HEAD
+          console.log('loaded cmps from db:',res)
+=======
+          console.log('loaded from db:', res)
+>>>>>>> origin/keren
+>>>>>>> master
           payload.cmps = res;
           context.commit(payload);
         })
@@ -70,18 +88,31 @@ const store = new Vuex.Store({
     loadPageEditObj(context, payload) {
       cmpService.getPageEdit()
         .then(res => {
+<<<<<<< HEAD
           console.log('loaded page from db:', res)
+=======
+<<<<<<< HEAD
+          console.log('loaded page from db:',res)          
+=======
+          console.log('loaded from db:', res)
+>>>>>>> origin/keren
+>>>>>>> master
           payload.pageEditObj = res[0];
           context.commit(payload);
         })
     },
     addCmp(context, payload) {
+      //set "isAdding" to false to enable spinner while waiting for db
+      context.commit({type:'setIsAdding', isAdding:true});
       cmpService.addCmp(payload.newCmpType)
         .then(cmp => {
           payload.newCmp = cmp;
           var pageEditCopy = Object.assign(context.state.pageEditObj);
           pageEditCopy.cmpsOrder.push(cmp._id)
           payload.newPage = pageEditCopy;
+          //set "isAdding" to false to disable spinner
+          context.commit({type:'setIsAdding', isAdding:false});
+          //commit the new cmp as usual
           context.commit(payload);
           cmpService.updatePage(pageEditCopy)
             .then(res => {
