@@ -137,7 +137,6 @@ export default {
         }
     },
     methods: {
-
         show: function () {
             this.isVisible = true;
         },

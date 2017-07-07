@@ -33,13 +33,15 @@
         </form>
       </md-dialog-content>
     </md-dialog>
-    <transition-group v-if="cmpsToDisplay" name="list" tag="p">
-  
+    <draggable :list="cmpsToDisplay" @end="onEnd" :options="{draggable:'section'}">
+      <!--<transition-group v-if="cmpsToDisplay" name="list" tag="p">-->
       <component v-for="(cmp, idx) in cmpsToDisplay" v-bind:is="cmp.type" :key="cmp._id" :cmp="cmp" :isEditable="true" :isFirst="idx === 0" :isLast="idx === lastIdxCmps">
       </component>
-    </transition-group>
+      <!--</transition-group>-->
+    </draggable>
+  
     <div class="btn-holder">
-      <md-button class="md-icon-button md-raised md-accent" id="custom" @click="openDialog('dialog1')">
+      <md-button class="md-icon-butto n md-raised md-accent" id="custom" @click="openDialog('dialog1')">
         <md-icon>add</md-icon>
       </md-button>
     </div>
@@ -48,6 +50,7 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 import SimpleText from '../components/cmpTmpls/SimpleText'
 import SimpleTitle from '../components/cmpTmpls/SimpleTitle'
 import LocationMap from '../components/cmpTmpls/LocationMap'
@@ -56,6 +59,7 @@ import CoupleAbout from '../components/cmpTmpls/CoupleAbout'
 export default {
   name: 'EditPage',
   components: {
+    draggable,
     SimpleText,
     SimpleTitle,
     LocationMap,
@@ -77,8 +81,15 @@ export default {
     // selectedCmps() {
     //   return this.$store.state.selectedCmps;
     // },
-    cmpsToDisplay() {
-      return this.$store.getters.cmpsToDisplay;
+    cmpsToDisplay: {
+      get() {
+        return this.$store.getters.cmpsToDisplay
+
+
+      },
+      set(newCmps) {
+        console.log(newCmps)
+      }
     },
     lastIdxCmps() {
       return this.cmpsToDisplay.length - 1;
@@ -98,12 +109,20 @@ export default {
     closeDialog(ref) {
       this.$refs[ref].close();
     },
+    dragevent(ev) {
+      console.log(ev)
+    },
     // onOpen() {
     //   console.log('Opened');
     // },
     // onClose(type) {
     //   console.log('Closed', type);
     // }
+    onEnd(ev) {
+      var newIndex = ev.newIndex;
+      var oldIndex = ev.oldIndex;
+      this.$store.dispatch({ type: 'dragCmp', newIndex, oldIndex })
+    },
   },
 
 }
